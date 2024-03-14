@@ -1,0 +1,57 @@
+body {
+    font-family: "Play", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background-color: slategray;
+
+}
+
+.container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: white;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    width: 50%;
+}
+
+.username, .textmensage{
+    font-family: "Play", sans-serif;
+    font-size: 2rem;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.textmensage {
+    height: 200px;
+}
+
+.enterchat, .sendtextmenssage{
+    width: 200px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+ul{
+    margin-top: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+li{
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Socket.io</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./src/css/reset.css">
+    <link rel="stylesheet" href="./src/css/style.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <input class="username" type="text" id="usernameInput" placeholder="Coloque seu nome de usuário">
+        <button class="enterchat" onclick="joinChat()">Entrar no chat</button><br>
+        <input class="textmensage" type="text" id="messageInput" placeholder="Escreva sua mensagem">
+        <button class="sendtextmenssage" onclick="sendMessage()">Enviar</button>
+        <ul id="messages"></ul>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+    
+        function getRandomColor() {
+            const color = Math.floor(Math.random() * 16777215).toString(16);
+            return "#" + "0".repeat(6 - color.length) + color;
+        }
+    
+        const joinChat = () => {
+            const usernameInput = document.getElementById('usernameInput');
+            const username = usernameInput.value.trim();
+    
+            if (username) {
+                const color = getRandomColor();
+                socket.emit('join', { username, color });
+            }
+        };
+    
+        const sendMessage = () => {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+    
+            if (message) {
+                const usernameInput = document.getElementById('usernameInput');
+                const username = usernameInput.value.trim();
+                const color = usernameInput.style.color;
+                socket.emit('chat message', { username, text: message, color });
+                messageInput.value = '';
+            }
+        };
+
+        const handleKeyPress = (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        };
+
+        document.getElementById('messageInput').addEventListener('keypress', handleKeyPress);
+
+    
+        socket.on('chat message', (msg) => {
+            const li = document.createElement('li');
+            li.textContent = `${msg.username}: ${msg.text}`;
+            li.style.color = msg.color;
+            document.getElementById('messages').appendChild(li);
+        });
+    
+        socket.on('userJoined', (userData) => {
+            const { username, color } = userData;
+            const li = document.createElement('li');
+            li.textContent= `${username} entrou no chat.`;
+            li.style.color = color;
+            document.getElementById('messages').appendChild(li);
+        });
+    </script>
+    
+</body>
+</html>
